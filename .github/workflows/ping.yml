@@ -12,7 +12,7 @@ jobs:
     steps:
       - name: Send Request to Endpoint
         run: |
-          curl -X POST "$BASE_URL/api/cron" \
+          curl -X GET $BASE_URL/api/cron \
             -H "Authorization: Bearer $CRON_SECRET"
         env:
           CRON_SECRET: ${{ secrets.CRON_SECRET }}
