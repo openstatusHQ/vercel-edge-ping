@@ -8,7 +8,14 @@ Choose your [configuration](#configuration) and be ready in 5min to monitor your
 
 You can even one-click deploy the service by adding the stringified array to the `REQUESTS` environment variables. (see [here](#environment-variables))
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FopenstatusHQ%vercel-edge-runner&env=CRON_SECRET,PING_SECRET,TINYBIRD_TOKEN,SLACK_WEBHOOK_URL,DISCORD_WEBHOOK_URL)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FopenstatusHQ%vercel-edge-ping&env=CRON_SECRET,PING_SECRET,TINYBIRD_TOKEN,SLACK_WEBHOOK_URL,DISCORD_WEBHOOK_URL)
+
+Supported [notification channels](#notification-channels):
+
+- Slack via webhook
+- Discord via webhook
+- Campsite via api
+- Telegram via bot
 
 ## Getting Started
 
@@ -76,7 +83,7 @@ All three options can work parallely.
 
 We _roughly_ validate the external input. If they don't match the expected type, you'll see a `console.error` in your logs.
 
-#### File
+#### File reading
 
 Add your endpoints statically to the list `./api/resources.json` file.
 
@@ -86,13 +93,13 @@ For example:
 [{ "url": "https://openstat.us/200", "method": "GET", "prewarm": true }]
 ```
 
-#### Fetch
+#### Fetching resources
 
 Create an endpoint that returns the list. Use the `EXTERNAL_REQUESTS_URL` to fetch the list dynamically on every ping.
 
 To secure your endpoint, we provide the `EXTERNAL_REQUESTS_SECRET` environment variable that gets passed as property to the header `Authorization: Bearer EXTERNAL_REQUESTS_SECRET`.
 
-#### Env
+#### Environment variables
 
 The **fastest way to get started** is to add the stringified list to your environment variables.
 
@@ -103,30 +110,6 @@ For example:
 ```
 
 Whenever you change the environment variable, you'll need to rebuild/redeploy the app to included the latest changes.
-
-### Notifications (optional)
-
-If set, we will send a message if >50% of the regions of a specific endpoint are failing. An endpoint fails, if the response status code **doesn't start with `2` or `3`**.
-
-Notifications to the different services will be send only if the environment variables are set.
-
-#### Slack Webhook
-
-If you want to get notified whenever an endpoint is not healthy, add the `SLACK_WEBHOOK_URL` to your environment variables.
-
-To create a webhook for a specific channel you'd like to post the messages to, [follow the guide](https://api.slack.com/messaging/webhooks).
-
-#### Discord Webhook
-
-If you want to get notified whenever an endpoint is not healthy, add the `DISCORD_WEBHOOK_URL` to your environment variables.
-
-To create a webhook for a specific channel you'd like to post the messages to, [follow the guide](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks).
-
-#### Campsite Post
-
-If you want to get notified whenever an endpoint is not healthy, add the `CAMPSITE_API_KEY` and `CAMPSITE_CHANNEL_ID` to your environment variables.
-
-To create an API key, [follow the docs](https://developers.campsite.com/api-reference/introduction). You will need to connect your integration to a channel and copy the channel id as well.
 
 ### vercel.json
 
@@ -165,6 +148,36 @@ Go to your _GitHub repository → Settings → Secrets and variables → Actions
 - `BASE_URL` - the production URL from vercel
 
 You can either trigger it manually via `workflow_dispatch` or update the `schedule.cron` to the cron expression you'd like to periodically run the attached curl.
+
+## Notification Channels
+
+If set, we will send a message if >50% of the regions of a specific endpoint are failing. An endpoint fails, if the response status code **doesn't start with `2` or `3`**.
+
+Notifications to the different services will be send only if the environment variables are set.
+
+### Slack Webhook (optional)
+
+If you want to get notified whenever an endpoint is not healthy, add the `SLACK_WEBHOOK_URL` to your environment variables.
+
+To create a webhook for a specific channel you'd like to post the messages to, [follow the guide](https://api.slack.com/messaging/webhooks).
+
+### Discord Webhook (optional)
+
+If you want to get notified whenever an endpoint is not healthy, add the `DISCORD_WEBHOOK_URL` to your environment variables.
+
+To create a webhook for a specific channel you'd like to post the messages to, [follow the guide](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks).
+
+### Campsite Post (optional)
+
+If you want to get notified whenever an endpoint is not healthy, add the `CAMPSITE_API_KEY` and `CAMPSITE_CHANNEL_ID` to your environment variables.
+
+To create an API key, [follow the docs](https://developers.campsite.com/api-reference/introduction). You will need to connect your integration to a channel and copy the channel id as well.
+
+### Telegram Bot (optional)
+
+If you want to get notified whenever an endpoint is not healthy, add the `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID` to your environment variables.
+
+To create a telegram bot, [follow the gist](https://gist.github.com/nafiesl/4ad622f344cd1dc3bb1ecbe468ff9f8a#how-to-get-telegram-bot-chat-id).
 
 ## Deployment
 
