@@ -2,7 +2,7 @@
 
 We want to provide you a lightweight version of [OpenStatus](https://openstatus.dev) to monitor your services. No library. No UI. No maintenance.
 
-Therefore, we will be using Vercel Edge runtime to monitor your services across 18 regions with a simple one-click deployment.
+Therefore, we will be using Vercel Edge runtime to monitor your services across 18 regions as simple as possible.
 
 Choose your [configuration](#configuration) and be ready in 5min to monitor your website or API services.
 
@@ -10,12 +10,12 @@ You can even one-click deploy the service by adding the stringified array to the
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FopenstatusHQ%2Fvercel-edge-ping&env=CRON_SECRET,PING_SECRET)
 
-Supported [notification channels](#notification-channels):
+Currently supported [notification channels](#notification-channels) are:
 
-- Slack via webhook
-- Discord via webhook
-- Campsite via api
-- Telegram via bot
+- Slack
+- Discord
+- Campsite
+- Telegram
 
 ## Getting Started
 
@@ -60,8 +60,6 @@ tb push tb/pipes/endpoint__get_http.pipe
 
 ### Monitors
 
-Extend the `requests` array with all the requests you'd like to periodically monitor.
-
 A `PingRequest` includes the below props:
 
 | **Property** | **Type**                 | **Description**                                                         |
@@ -75,7 +73,7 @@ A `PingRequest` includes the below props:
 
 There are multiple ways to add your monitors:
 
-- via `./api/_requests.ts` file _but that would require a fork + changes_
+- via `./api/resources.json` file _but that would require a fork + changes_
 - via a fetch call using the `REQUEST_GET_URL` returning a type of `PingRequest[]` _but that would require you to maintain that connection_
 - via `.env` where we stringify the `PingRequest[]` array and read it out
 
@@ -101,7 +99,7 @@ To secure your endpoint, we provide the `EXTERNAL_REQUESTS_SECRET` environment v
 
 #### Environment variables
 
-The **fastest way to get started** is to add the stringified list to your environment variables.
+The **fastest way to get started** without having to commit any code changes is to add the stringified list to your environment variables.
 
 For example:
 
@@ -109,7 +107,8 @@ For example:
 [{"url":"https://openstat.us/200","method":"GET", "prewarm":true}]
 ```
 
-Whenever you change the environment variable, you'll need to rebuild/redeploy the app to included the latest changes.
+> [!NOTE]
+> Whenever you change the environment variable, you'll need to rebuild/redeploy the app to included the latest changes.
 
 ### vercel.json
 
@@ -135,6 +134,8 @@ The [cron jobs](https://vercel.com/docs/cron-jobs) are set to the maximum of the
     }
   ]
 ```
+
+If you are on a _pro plan_, update it to the cron expression you'd like to use.
 
 The cron endpoint is automatically secured by including the [`CRON_SECRET`](https://vercel.com/docs/cron-jobs/manage-cron-jobs#securing-cron-jobs) environment variable.
 
