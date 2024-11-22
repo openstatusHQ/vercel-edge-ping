@@ -1,0 +1,16 @@
+VERSION 0
+
+SCHEMA >
+    `url` String `json:$.url`,
+    `method` String `json:$.method`,
+    `timestamp` Int64 `json:$.timestamp`,
+    `region` LowCardinality(String) `json:$.region`,
+    `latency` Nullable(Int64) `json:$.latency`,
+    `status` Nullable(Int16) `json:$.status`,
+    `error` Nullable(String) `json:$.error`,
+    `headers` Nullable(String) `json:$.headers`,
+    `body` Nullable(String) `json:$.body`
+
+ENGINE "MergeTree"
+ENGINE_SORTING_KEY "url, timestamp"
+ENGINE_PARTITION_KEY "toYYYYMM(fromUnixTimestamp64Milli(timestamp))"

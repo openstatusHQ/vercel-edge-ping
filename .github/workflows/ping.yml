@@ -1,0 +1,19 @@
+name: Ping Endpoint
+
+on:
+  # schedule:
+  #   - cron: "*/10 * * * *" # Every 10 minutes
+  workflow_dispatch: # Allows manual trigger from the GitHub Actions UI
+
+jobs:
+  ping-endpoint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Send Request to Endpoint
+        run: |
+          curl -X POST $BASE_URL/api/cron \
+            -H "Authorization: Bearer $CRON_SECRET"
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+          BASE_URL: ${{ secrets.BASE_URL }}

@@ -1,0 +1,11 @@
+VERSION 0
+
+NODE endpoint
+SQL >
+
+    %
+    SELECT *
+    from http_ping_responses
+    ORDER BY timestamp DESC
+    LIMIT {{ Int32(pageSize, 100) }}
+    OFFSET {{ Int32(pageIndex, 0) * Int32(pageSize, 100) }}
