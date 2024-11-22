@@ -4,14 +4,38 @@ export const config = {
 
 const region = process.env.VERCEL_REGION || "unknown";
 
+const META_DESCRIPTION =
+  "Lightweight one-click solution to monitor your endpoints across multiple regions.";
+const META_TITLE = "OpenStatus | Vercel Edge Ping";
+const META_URL = "https://light.openstatus.dev";
+const META_OG_IMAGE =
+  "https://www.openstatus.dev/api/og?title=Vercel%20Edge%20Ping&description=Lightweight%20one-click%20solution%20to%20monitor%20your%20endpoints%20across%20multiple%20regions.&footer=light.openstatus.dev";
+
 export async function GET(): Promise<Response> {
   const text = `
   <html>
     <head>
-      <title>OpenStatus | Vercel Edge Ping</title>
+      <title${META_TITLE}</title>
+      <meta name="description" content="${META_DESCRIPTION}">
+
+      <meta property="og:url" content="${META_URL}">
+      <meta property="og:type" content="website">
+      <meta property="og:title" content="${META_TITLE}">
+      <meta property="og:description" content="${META_DESCRIPTION}">
+      <meta property="og:image" content="${META_OG_IMAGE}">
+
+      <meta name="twitter:card" content="summary_large_image">
+      <meta property="twitter:domain" content="${META_URL}">
+      <meta property="twitter:url" content="${META_URL}">
+      <meta name="twitter:title" content="${META_TITLE}">
+      <meta name="twitter:description" content="${META_DESCRIPTION}">
+      <meta name="twitter:image" content="${META_OG_IMAGE}">
     </head>
     <body>
-      <h1>OpenStatus | Vercel Edge Ping</h1>
+      <h1>${META_TITLE}</h1>
+      <p>
+        Lightweight open-source one-click solution to monitor your endpoints across multiple regions.
+      </p>
       <p>
         Your request has been executed in region <code>${region}</code>.
       </p>
@@ -36,6 +60,9 @@ export async function GET(): Promise<Response> {
         <li><a href="/api/edge/sin1">/api/edge/sin1</a></li>
         <li><a href="/api/edge/syd1">/api/edge/syd1</a></li>
       </ul>
+      <p>
+        Be notified via Slack, Discord, Campsite or Telegram if >50% of the regions are down.
+      </p>
       <p>
         Get the latest cron requests by visiting <a href="/api/get">/api/get</a>.
       </p>
