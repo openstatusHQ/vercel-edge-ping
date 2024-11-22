@@ -8,7 +8,7 @@ Choose your [configuration](#configuration) and be ready in 5min to monitor your
 
 You can even one-click deploy the service by adding the stringified array to the `REQUESTS` environment variables. (see [here](#environment-variables))
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FopenstatusHQ%vercel-edge-ping&env=CRON_SECRET,PING_SECRET,TINYBIRD_TOKEN,SLACK_WEBHOOK_URL,DISCORD_WEBHOOK_URL)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FopenstatusHQ%2Fvercel-edge-ping&env=CRON_SECRET,PING_SECRET)
 
 Supported [notification channels](#notification-channels):
 
