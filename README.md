@@ -1,4 +1,4 @@
-# OpenStatus | Vercel Edge Runner
+# OpenStatus | Vercel Edge Ping
 
 We want to provide you a lightweight version of [OpenStatus](https://openstatus.dev) to monitor your services. No library. No UI. No maintenance.
 
@@ -33,7 +33,7 @@ Make sure to have the [Vercel CLI](https://vercel.com/docs/cli) running on your 
 Checkout `.env.example` for the (required) environment variables. Use the Vercel CLI and the [`add env`](https://vercel.com/docs/cli/env) command:
 
 ```bash
-vercel add env
+vercel env add
 ```
 
 ### Tinybird CLI (optional)
