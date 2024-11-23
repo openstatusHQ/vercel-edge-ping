@@ -1,12 +1,14 @@
 # OpenStatus | Vercel Edge Ping
 
-We want to provide you a lightweight version of [OpenStatus](https://openstatus.dev) to monitor your services. No library. No UI. No maintenance.
+No library. No UI. No maintenance.
 
-Therefore, we will be using Vercel Edge runtime to monitor your services across 18 regions as simple as possible.
+We want to provide you a lightweight version of [OpenStatus](https://openstatus.dev) to monitor your services.
+
+Therefore, we will be using Vercel's edge runtime to monitor your services across 18 regions as simple as possible. Read more about [vercel edge network regions](https://vercel.com/docs/edge-network/regions).
 
 Choose your [configuration](#configuration) and be ready in 5min to monitor your website or API services.
 
-You can even one-click deploy the service by adding the stringified array to the `REQUESTS` environment variables. (see [here](#environment-variables))
+You can even one-click self-host the service by adding the stringified array to the `REQUESTS` environment variables. (see [here](#environment-variables))
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FopenstatusHQ%2Fvercel-edge-ping&env=CRON_SECRET,PING_SECRET)
 
@@ -148,7 +150,7 @@ Go to your _GitHub repository → Settings → Secrets and variables → Actions
 - `CRON_SECRET` - the same one as in vercel envs
 - `BASE_URL` - the production URL from vercel
 
-You can either trigger it manually via `workflow_dispatch` or update the `schedule.cron` to the cron expression you'd like to periodically run the attached curl.
+You can either trigger it manually via `workflow_dispatch` or uncomment and update the `schedule.cron` to the cron expression you'd like to periodically run the attached curl.
 
 ## Notification Channels
 
@@ -197,3 +199,5 @@ vercel --prod
 > If you host your services on Vercel and want to make sure the provider is up, this is a bad idea as the edge ping depends on Vercel itself. Instead, it is good to keep uptime of your own services like hosted APIs, getting latency over time, or be informed whenever your services are not responding as expected.
 
 If you are on a pro plan on vercel, you are allowed for _Unlimited cron invocations_ instead of _Triggered once a day_. Fork and change the `vercel.json` content to whatevery cron you'd like to. Use [crontab.guru](https://crontab.guru) to quickly edit and validate the cron expression.
+
+Test the notifications with [openstat.us](https://openstat.us) where you can define the returned status code with ease.
