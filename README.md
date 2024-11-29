@@ -101,7 +101,7 @@ To secure your endpoint, we provide the `EXTERNAL_REQUESTS_SECRET` environment v
 
 #### Environment variables
 
-The **fastest way to get started** without having to commit any code changes is to add the stringified list to your environment variables.
+The **fastest way to get started** without having to commit any code changes is to add the stringified list to your `REQUESTS` environment variables.
 
 For example:
 
