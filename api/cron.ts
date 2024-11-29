@@ -13,9 +13,17 @@ import {
   getFileRequests,
 } from "./_requests.js";
 
-const BASE_URL = process.env.VERCEL_URL
-  ? `https://${process.env.VERCEL_URL}`
-  : "http://localhost:3000";
+/**
+ * REMINDER: VERCEL_URL can be available but requires the
+ * _Project Settings -> Deployment Protection -> Vercel Authentificatio_ to be disabled(!)
+ * We will use the VERCEL_PROJECT_PRODUCTION_URL instead to avoid this as it is the public URL.
+ * Can be set manually to BASE_URL.
+ */
+
+const BASE_URL =
+  process.env.BASE_URL || process.env.VERCEL_PROJECT_PRODUCTION_URL
+    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    : "http://localhost:3000";
 
 const FAILED_RATIO_THRESHOLD = 0.5;
 
