@@ -193,6 +193,19 @@ vercel
 vercel --prod
 ```
 
+## Testing
+
+If you want to manually test the created endpoints, you can:
+
+```
+curl -X POST "<VERCEL_URL>/api/edge/hnd1" \
+  -H "Authorization: Bearer <PING_SECRET>" \
+  -H "Content-Type: application/json" \
+  -d '{"url":"https://openstat.us/200","method":"GET"}'
+```
+
+Replace `<VERCEL_URL>` with your deployment URL, and `<PING_SECRET>` with your defined environment variable. Additionally, change `hnd1` to any region you'd like to ping from.
+
 ## More
 
 > [!NOTE]  
