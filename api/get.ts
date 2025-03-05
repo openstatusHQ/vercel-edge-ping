@@ -1,7 +1,5 @@
 const EVENT_NAME = "endpoint__get_http__v0";
 
-// TODO: add filters and more
-
 export async function GET(req: Request) {
   if (!process.env.TINYBIRD_TOKEN) {
     return new Response("No Connected Database", { status: 200 });
