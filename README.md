@@ -58,6 +58,25 @@ tb push tb/datasources/http_ping_responses.datasource
 tb push tb/pipes/endpoint__get_http.pipe
 ```
 
+#### API endpoint
+
+If you've connected your database to Tinybird, we provide you a simple `GET` endpoint to query your periodical pings.
+
+The endpoint accepts the following query parameters:
+
+| **Parameter**  | **Type** | **Description**                                       |
+| -------------- | -------- | ----------------------------------------------------- |
+| `pageIndex`    | `number` | The page number for pagination (starts at 0)          |
+| `pageSize`     | `number` | Number of results per page (defaults to 100)          |
+| `orderBy`      | `string` | Column to sort by (defaults to 'timestamp')           |
+| `orderDir`     | `string` | Sort direction - 'ASC' or 'DESC' (defaults to 'DESC') |
+| `latencyStart` | `number` | Filter results with latency >= this value (ms)        |
+| `latencyEnd`   | `number` | Filter results with latency <= this value (ms)        |
+| `statuses`     | `string` | Filter by HTTP status codes (comma-separated list)    |
+| `regions`      | `string` | Filter by edge regions (comma-separated list)         |
+| `methods`      | `string` | Filter by HTTP methods (comma-separated list)         |
+| `url`          | `string` | Filter URLs containing this string                    |
+
 ## Configuration
 
 ### Monitors
@@ -83,6 +102,19 @@ All three options can work parallely.
 
 We _roughly_ validate the external input. If they don't match the expected type, you'll see a `console.error` in your logs.
 
+#### Environment variables
+
+The **fastest way to get started** without having to commit any code changes is to add the stringified list to your `REQUESTS` environment variables.
+
+For example:
+
+```
+[{"url":"https://openstat.us/200","method":"GET", "prewarm":true}]
+```
+
+> [!NOTE]
+> Whenever you change the environment variable, you'll need to rebuild/redeploy the app to included the latest changes.
+
 #### File reading
 
 Add your endpoints statically to the list `./api/resources.json` file.
@@ -98,19 +130,6 @@ For example:
 Create an endpoint that returns the list. Use the `EXTERNAL_REQUESTS_URL` to fetch the list dynamically on every ping.
 
 To secure your endpoint, we provide the `EXTERNAL_REQUESTS_SECRET` environment variable that gets passed as property to the header `Authorization: Bearer EXTERNAL_REQUESTS_SECRET`.
-
-#### Environment variables
-
-The **fastest way to get started** without having to commit any code changes is to add the stringified list to your `REQUESTS` environment variables.
-
-For example:
-
-```
-[{"url":"https://openstat.us/200","method":"GET", "prewarm":true}]
-```
-
-> [!NOTE]
-> Whenever you change the environment variable, you'll need to rebuild/redeploy the app to included the latest changes.
 
 ### vercel.json
 
