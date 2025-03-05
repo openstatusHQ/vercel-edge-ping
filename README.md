@@ -77,6 +77,8 @@ The endpoint accepts the following query parameters:
 | `methods`      | `string` | Filter by HTTP methods (comma-separated list)         |
 | `url`          | `string` | Filter URLs containing this string                    |
 
+> Remember that this `/api/get` endpoint will be accessible by anyone if you are not securing it yourself.
+
 ## Configuration
 
 ### Monitors
