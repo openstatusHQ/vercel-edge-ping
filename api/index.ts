@@ -63,9 +63,12 @@ export async function GET(): Promise<Response> {
       <p>
         Be notified via Slack, Discord, Campsite or Telegram if >50% of the regions are down.
       </p>
-      <p>
-        Get the latest cron requests by visiting <a href="/api/get">/api/get</a>.
-      </p>
+      <p>More endpoints (with search params support):</p>
+      <ul>
+        <li>Get the latest requests by visiting <a href="/api/get">/api/get</a>.</li>
+        <li>Get the latest stats by visiting <a href="/api/stats">/api/stats</a>.</li>
+        <li>Get the latest facets by visiting <a href="/api/facets">/api/facets</a>.</li>
+      </ul>
       <p>
         Read more on <a href="https://github.com/openstatusHQ/vercel-edge-ping">GitHub</a>
         &#183;

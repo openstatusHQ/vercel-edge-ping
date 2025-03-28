@@ -1,0 +1,31 @@
+VERSION 0
+
+NODE endpoint
+SQL >
+
+    %
+    WITH
+        filtered_data AS (
+            SELECT timestamp, status
+            FROM http_ping_responses__v0
+            WHERE
+                {% if defined(timestampStart) %} timestamp >= {{ Int64(timestampStart) }}
+                {% else %}
+                    timestamp >= toUnixTimestamp64Milli(toDateTime64(now64(), 3)) - (86_400_000 * 30)
+                {% end %}
+                {% if defined(timestampEnd) %} AND timestamp <= {{ Int64(timestampEnd) }} {% end %}
+        )
+    SELECT
+        toUnixTimestamp(
+            toStartOfInterval(
+                toDateTime(timestamp / 1000), INTERVAL {{ Int32(interval, 1_440) }} MINUTE
+            )
+        ) * 1000 AS timestamp,
+        countIf(status >= 200 AND status < 400) AS success,
+        countIf(status >= 400 AND status < 500) AS warning,
+        countIf(status >= 500) AS error
+    FROM filtered_data
+    GROUP BY timestamp
+    ORDER BY timestamp
+    WITH FILL
+        STEP {{ Int32(interval, 1_440) }} * 60 * 1000

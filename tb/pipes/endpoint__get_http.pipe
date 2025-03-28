@@ -4,7 +4,17 @@ NODE endpoint
 SQL >
 
     %
-    SELECT *
+    SELECT
+        *,
+        multiIf(
+            status >= 200 AND status < 400,
+            'success',
+            status >= 400 AND status < 500,
+            'warning',
+            status >= 500,
+            'error',
+            'unknown'  -- Default case if none of the above match
+        ) as level
     from http_ping_responses__v0
     WHERE
         1 = 1

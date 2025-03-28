@@ -19,6 +19,8 @@ Currently supported [notification channels](#notification-channels) are:
 - Campsite
 - Telegram
 
+We also provide a 6 min. [YouTube](https://www.youtube.com/watch?v=cpurWC9Co1U) video for more visual content. If you have any trouble, feel free to open an issue, join our [Discord](https://openstatus.dev/discord) or message us to [ping@openstatus.dev](mailto:ping@openstatus.dev)
+
 ## Getting Started
 
 To work/test it locally:
@@ -62,7 +64,7 @@ tb push tb/pipes/endpoint__get_http.pipe
 
 If you've connected your database to Tinybird, we provide you a simple `GET` endpoint to query your periodical pings.
 
-The endpoint accepts the following query parameters:
+The `/api/get` endpoint accepts the following query parameters:
 
 | **Parameter**  | **Type** | **Description**                                       |
 | -------------- | -------- | ----------------------------------------------------- |
@@ -77,7 +79,39 @@ The endpoint accepts the following query parameters:
 | `methods`      | `string` | Filter by HTTP methods (comma-separated list)         |
 | `url`          | `string` | Filter URLs containing this string                    |
 
-> Remember that this `/api/get` endpoint will be accessible by anyone if you are not securing it yourself.
+Moreover, to make best use of the data-table, we support an `/api/stats` endpoint.
+
+| **Parameter**    | **Type** | **Description**                                       |
+| ---------------- | -------- | ----------------------------------------------------- |
+| `interval`       | `number` | Minutes interval of stats (defaults to 1_440 - 1 day) |
+| `timestampStart` | `number` | Unix timestamp in ms (defaults to 30 days prior)      |
+| `timestampEnd`   | `number` | Unix timestamp in ms (defaults to now)                |
+
+and an `/api/facets` endpoint.
+
+| **Parameter**    | **Type** | **Description**                                  |
+| ---------------- | -------- | ------------------------------------------------ |
+| `timestampStart` | `number` | Unix timestamp in ms (defaults to 30 days prior) |
+| `timestampEnd`   | `number` | Unix timestamp in ms (defaults to now)           |
+
+All endpoints return just a layer to access the tinybird pipe responses. They share the following response object:
+
+```json
+{
+  "meta": [], // list of data types, e.g. {"name", "latency", "type", "Int32"}
+  "data": [], // list of return values
+  "rows": 20,
+  "rows_before_limit_at_least": 100,
+  "statistics": {
+    "elapsed": 0.004015279,
+    "rows_read": 2845,
+    "bytes_read": 725311
+  }
+}
+```
+
+> [!NOTE]
+> The `/api/get`, `/api/stats`, `/api/facets` endpoints will be accessible by anyone if you are not securing it yourself.
 
 ## Configuration
 

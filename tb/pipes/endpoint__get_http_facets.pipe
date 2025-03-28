@@ -1,0 +1,42 @@
+VERSION 0
+
+NODE endpoint
+SQL >
+
+    %
+    SELECT facet, value, COUNT(*) AS count
+    FROM
+        (
+            SELECT
+                arrayJoin(
+                    [
+                        ('method', method),
+                        ('url', url),
+                        ('status', toString(status)),
+                        ('region', region),
+                        ('latency', toString(latency)),
+                        (
+                            'level',
+                            multiIf(
+                                status >= 200 AND status < 400, 'success',
+                                status >= 400 AND status < 500, 'warning',
+                                status >= 500, 'error',
+                                'unknown'
+                            )
+                        )
+                    ]
+                ) AS pair,
+                pair.1 AS facet,
+                pair.2 AS value
+            FROM http_ping_responses__v0
+            WHERE
+                {% if defined(timestampStart) %}
+                    timestamp >= {{ Int64(timestampStart) }}
+                {% else %}
+                    timestamp >= toUnixTimestamp64Milli(toDateTime64(now64(), 3)) - (86_400_000 * 30)
+                {% end %}
+                {% if defined(timestampEnd) %}
+                    AND timestamp <= {{ Int64(timestampEnd) }}
+                {% end %}
+        )
+    GROUP BY facet, value

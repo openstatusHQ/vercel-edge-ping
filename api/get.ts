@@ -14,6 +14,8 @@ export async function GET(req: Request) {
   const latencyStart = searchParams.get("latencyStart");
   const latencyEnd = searchParams.get("latencyEnd");
   const url = searchParams.get("url");
+  const timestampStart = searchParams.get("timestampStart");
+  const timestampEnd = searchParams.get("timestampEnd");
   // REMINDER: can be comma separated list as tb supports arrays.
   const statuses = searchParams.get("statuses");
   const methods = searchParams.get("methods");
@@ -32,6 +34,8 @@ export async function GET(req: Request) {
   if (methods) tbUrl.searchParams.set("methods", methods);
   if (regions) tbUrl.searchParams.set("regions", regions);
   if (url) tbUrl.searchParams.set("url", url);
+  if (timestampStart) tbUrl.searchParams.set("timestampStart", timestampStart);
+  if (timestampEnd) tbUrl.searchParams.set("timestampEnd", timestampEnd);
 
   const result = await fetch(tbUrl, {
     method: "GET",
@@ -48,7 +52,7 @@ export async function GET(req: Request) {
     return new Response("Internal Server Error", { status: 500 });
   }
 
-  return new Response(JSON.stringify(result.data), {
+  return new Response(JSON.stringify(result), {
     headers: { "Content-Type": "application/json" },
   });
 }
