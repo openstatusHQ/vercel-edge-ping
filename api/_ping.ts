@@ -82,8 +82,11 @@ async function check(request: PingRequest): Promise<PingResponse> {
   clearTimeout(timeoutId);
 
   const latency = end - start;
-  const body = (await res.text()).slice(0, 1000); // limit to 1000 characters to avoid saving large payloads in tb
+  const text = await res.text();
   const headers = Object.fromEntries(res.headers.entries());
+
+  // NOTE: we limit the body to 1000 characters to avoid saving large payloads in tb
+  const body = text.length > 1000 ? text.slice(0, 1000) + "..." : text;
 
   return {
     url: request.url,
