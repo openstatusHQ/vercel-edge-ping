@@ -98,8 +98,8 @@ All endpoints return just a layer to access the tinybird pipe responses. They sh
 
 ```json
 {
-  "meta": [], // list of data types, e.g. {"name", "latency", "type", "Int32"}
-  "data": [], // list of return values
+  "meta": [],
+  "data": [],
   "rows": 20,
   "rows_before_limit_at_least": 100,
   "statistics": {
