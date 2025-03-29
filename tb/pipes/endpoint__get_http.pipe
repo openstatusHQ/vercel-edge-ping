@@ -26,6 +26,18 @@ SQL >
         {% if defined(url) %} AND url ILIKE concat('%', {{ String(url) }}, '%') {% end %}
         {% if defined(timestampStart) %} AND timestamp >= {{ Int64(timestampStart) }} {% end %}
         {% if defined(timestampEnd) %} AND timestamp <= {{ Int64(timestampEnd) }} {% end %}
+        {% if defined(levels) %}
+            AND multiIf(
+                status >= 200 AND status < 400,
+                'success',
+                status >= 400 AND status < 500,
+                'warning',
+                status >= 500,
+                'error',
+                'unknown'
+            )
+            IN {{ Array(levels, String) }}
+        {% end %}
     ORDER BY
         {{ column(orderBy, 'timestamp') }}
         {% if defined(orderDir) and String(orderDir) == "ASC" %} ASC

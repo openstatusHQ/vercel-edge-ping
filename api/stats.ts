@@ -7,16 +7,10 @@ export async function GET(req: Request) {
 
   const reqUrl = new URL(req.url);
   const searchParams = reqUrl.searchParams;
-  const interval = searchParams.get("interval");
-  const timestampStart = searchParams.get("timestampStart");
-  const timestampEnd = searchParams.get("timestampEnd");
 
-  const tbUrl = new URL(`https://api.tinybird.co/v0/pipes/${EVENT_NAME}.json`);
-
-  // Only set params if they are provided
-  if (interval) tbUrl.searchParams.set("interval", interval); // in minutes
-  if (timestampStart) tbUrl.searchParams.set("timestampStart", timestampStart); // in unix timestamp
-  if (timestampEnd) tbUrl.searchParams.set("timestampEnd", timestampEnd); // in unix timestamp
+  const tbUrl = new URL(
+    `https://api.tinybird.co/v0/pipes/${EVENT_NAME}.json?${searchParams.toString()}`
+  );
 
   const result = await fetch(tbUrl, {
     method: "GET",
