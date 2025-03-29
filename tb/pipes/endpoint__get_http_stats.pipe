@@ -6,14 +6,13 @@ SQL >
     %
     WITH
         filtered_data AS (
-            SELECT timestamp, status
-            FROM http_ping_responses__v0
-            WHERE
-                {% if defined(timestampStart) %} timestamp >= {{ Int64(timestampStart) }}
-                {% else %}
-                    timestamp >= toUnixTimestamp64Milli(toDateTime64(now64(), 3)) - (86_400_000 * 30)
-                {% end %}
-                {% if defined(timestampEnd) %} AND timestamp <= {{ Int64(timestampEnd) }} {% end %}
+            SELECT timestamp, status FROM endpoint
+            {% if defined(timestampStart) and defined(timestampEnd) %}
+            UNION ALL
+            SELECT {{ Int64(timestampStart) }} AS timestamp, 0 AS status  -- Start boundary
+            UNION ALL
+            SELECT {{ Int64(timestampEnd) }} AS timestamp, 0 AS status    -- End boundary
+            {% end %}
         )
     SELECT
         toUnixTimestamp(
@@ -27,5 +26,4 @@ SQL >
     FROM filtered_data
     GROUP BY timestamp
     ORDER BY timestamp
-    WITH FILL
-        STEP {{ Int32(interval, 1_440) }} * 60 * 1000
+    WITH FILL STEP {{ Int32(interval, 1_440) }} * 60 * 1000

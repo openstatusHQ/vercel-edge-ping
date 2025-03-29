@@ -43,5 +43,5 @@ SQL >
         {% if defined(orderDir) and String(orderDir) == "ASC" %} ASC
         {% else %} DESC
         {% end %}
-    LIMIT {{ Int32(pageSize, 100) }}
+    {% if defined(pageSize) %} LIMIT {{ Int32(pageSize, 100) }} {% end %}
     OFFSET {{ Int32(pageIndex, 0) * Int32(pageSize, 100) }}
