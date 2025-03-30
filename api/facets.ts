@@ -1,4 +1,4 @@
-const EVENT_NAME = "endpoint__get_http__v0";
+const EVENT_NAME = "endpoint__get_http_facets__v0";
 
 export async function GET(req: Request) {
   if (!process.env.TINYBIRD_TOKEN) {

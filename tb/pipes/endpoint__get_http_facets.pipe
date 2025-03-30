@@ -1,0 +1,25 @@
+VERSION 0
+
+NODE endpoint
+SQL >
+
+    %
+    SELECT facet, value, COUNT(*) AS count
+    FROM
+        (
+            SELECT
+                arrayJoin(
+                    [
+                        ('method', method),
+                        ('url', url),
+                        ('status', toString(status)),
+                        ('region', region),
+                        ('latency', toString(latency)),
+                        ('level', level)
+                    ]
+                ) AS pair,
+                pair .1 AS facet,
+                pair .2 AS value
+            FROM endpoint__get_http__v0
+        )
+    GROUP BY facet, value
