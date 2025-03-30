@@ -21,6 +21,8 @@ Currently supported [notification channels](#notification-channels) are:
 
 We also provide a 6 min. [YouTube](https://www.youtube.com/watch?v=cpurWC9Co1U) video for more visual content. If you have any trouble, feel free to open an issue, join our [Discord](https://openstatus.dev/discord) or message us to [ping@openstatus.dev](mailto:ping@openstatus.dev)
 
+If storing the data to [Tinybird](https://www.tinybird.co), you can use the [OpenStatus Light Viewer](https://data-table.openstatus.dev/light) to filter and learn from your pings.
+
 ## Getting Started
 
 To work/test it locally:
@@ -58,43 +60,42 @@ Add `--dry-run` to the commands if you want to first test them:
 ```bash
 tb push tb/datasources/http_ping_responses.datasource
 tb push tb/pipes/endpoint__get_http.pipe
+tb push tb/pipes/endpoint__get_http_stats.pipe
+tb push tb/pipes/endpoint__get_http_facets.pipe
 ```
 
 #### API endpoint
 
-If you've connected your database to Tinybird, we provide you a simple `GET` endpoint to query your periodical pings.
+If you've connected your database to Tinybird, we provide you a some simple `GET` endpoint to query your pings.
 
-The `/api/get` endpoint accepts the following query parameters:
-
-| **Parameter**  | **Type** | **Description**                                       |
-| -------------- | -------- | ----------------------------------------------------- |
-| `pageIndex`    | `number` | The page number for pagination (starts at 0)          |
-| `pageSize`     | `number` | Number of results per page (defaults to 100)          |
-| `orderBy`      | `string` | Column to sort by (defaults to 'timestamp')           |
-| `orderDir`     | `string` | Sort direction - 'ASC' or 'DESC' (defaults to 'DESC') |
-| `latencyStart` | `number` | Filter results with latency >= this value (ms)        |
-| `latencyEnd`   | `number` | Filter results with latency <= this value (ms)        |
-| `statuses`     | `string` | Filter by HTTP status codes (comma-separated list)    |
-| `regions`      | `string` | Filter by edge regions (comma-separated list)         |
-| `methods`      | `string` | Filter by HTTP methods (comma-separated list)         |
-| `url`          | `string` | Filter URLs containing this string                    |
-
-Moreover, to make best use of the data-table, we support an `/api/stats` endpoint.
+The `/api/get` endpoint (`endpoint__get_http.pipe`) accepts the following query parameters:
 
 | **Parameter**    | **Type** | **Description**                                       |
 | ---------------- | -------- | ----------------------------------------------------- |
-| `interval`       | `number` | Minutes interval of stats (defaults to 1_440 - 1 day) |
+| `pageIndex`      | `number` | The page number for pagination (starts at 0)          |
+| `pageSize`       | `number` | Number of results per page (defaults to 100)          |
+| `orderBy`        | `string` | Column to sort by (defaults to 'timestamp')           |
+| `orderDir`       | `string` | Sort direction - 'ASC' or 'DESC' (defaults to 'DESC') |
+| `latencyStart`   | `number` | Filter results with latency >= this value (ms)        |
+| `latencyEnd`     | `number` | Filter results with latency <= this value (ms)        |
+| `statuses`       | `string` | Filter by HTTP status codes (comma-separated list)    |
+| `regions`        | `string` | Filter by edge regions (comma-separated list)         |
+| `methods`        | `string` | Filter by HTTP methods (comma-separated list)         |
+| `url`            | `string` | Filter URLs containing this string                    |
 | `timestampStart` | `number` | Unix timestamp in ms (defaults to 30 days prior)      |
 | `timestampEnd`   | `number` | Unix timestamp in ms (defaults to now)                |
 
-and an `/api/facets` endpoint.
+Moreover, to make best use of the [OpenStatus Light Viewer](https://data-table.openstatus.dev/light), we support two more API endpoints. They both extend the above query params.
 
-| **Parameter**    | **Type** | **Description**                                  |
-| ---------------- | -------- | ------------------------------------------------ |
-| `timestampStart` | `number` | Unix timestamp in ms (defaults to 30 days prior) |
-| `timestampEnd`   | `number` | Unix timestamp in ms (defaults to now)           |
+- `/api/stats` endpoint (`endpoint__get_http_stats.pipe`) for the chart values (incl. `interval` param)
 
-All endpoints return just a layer to access the tinybird pipe responses. They share the following response object:
+| **Parameter** | **Type** | **Description**                                                                     |
+| ------------- | -------- | ----------------------------------------------------------------------------------- |
+| `interval`    | `number` | Interval of grouped data in minutes (defaults to 1_440 minutes equivalent to 1 day) |
+
+- `/api/facets` endpoint (`endpoint__get_http_facets.pipe`) for the table facets (no additional param)
+
+All endpoints are just a layer to access the tinybird pipe responses. They share the following response object example:
 
 ```json
 {

@@ -6,7 +6,7 @@ const region = process.env.VERCEL_REGION || "unknown";
 
 const META_DESCRIPTION =
   "Lightweight one-click solution to monitor your endpoints across multiple regions.";
-const META_TITLE = "OpenStatus | Vercel Edge Ping";
+const META_TITLE = "OpenStatus Light | Vercel Edge Ping";
 const META_URL = "https://light.openstatus.dev";
 const META_OG_IMAGE =
   "https://www.openstatus.dev/api/og?title=Vercel%20Edge%20Ping&description=Lightweight%20one-click%20solution%20to%20monitor%20your%20endpoints%20across%20multiple%20regions.&footer=light.openstatus.dev";
@@ -69,6 +69,7 @@ export async function GET(): Promise<Response> {
         <li>Get the latest stats by visiting <a href="/api/stats">/api/stats</a>.</li>
         <li>Get the latest facets by visiting <a href="/api/facets">/api/facets</a>.</li>
       </ul>
+      <p>Once deployed, access your data by visiting <a href="https://logs.run/light">logs.run/light</a> and changing the base URL to your endpoint.</p>
       <p>
         Read more on <a href="https://github.com/openstatusHQ/vercel-edge-ping">GitHub</a>
         &#183;
