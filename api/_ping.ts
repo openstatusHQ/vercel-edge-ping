@@ -59,7 +59,7 @@ export async function ping(request: PingRequest): Promise<PingResponse> {
 
 async function check(request: PingRequest): Promise<PingResponse> {
   const region = process.env.VERCEL_REGION || "unknown";
-  const timeout = request.timeout || 50_000; // default 50s
+  const timeout = request.timeout || 30_000; // default 30s
   const controller = new AbortController();
 
   const timeoutId = setTimeout(

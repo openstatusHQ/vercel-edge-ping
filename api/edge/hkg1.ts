@@ -28,11 +28,7 @@ export default async function handler(req: Request): Promise<Response> {
 
   console.log("Ping response", region, res);
 
-  waitUntil(
-    ingest([res]).then((res) => {
-      console.log("Tinybird response", region, res?.status || "unknown");
-    })
-  );
+  await ingest([res]);
 
   return new Response(JSON.stringify(res), {
     headers: { "Content-Type": "application/json" },
