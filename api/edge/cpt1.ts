@@ -1,4 +1,4 @@
-import { waitUntil, getEnv } from "@vercel/functions";
+import { getEnv } from "@vercel/functions";
 import { ping } from "../_ping";
 import { ingest } from "../_db";
 
@@ -27,12 +27,7 @@ export default async function handler(req: Request): Promise<Response> {
   const res = await ping(body);
 
   console.log("Ping response", region, res);
-
-  waitUntil(
-    ingest([res]).then((res) => {
-      console.log("Tinybird response", region, res?.status || "unknown");
-    })
-  );
+  await ingest([res]);
 
   return new Response(JSON.stringify(res), {
     headers: { "Content-Type": "application/json" },
