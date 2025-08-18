@@ -1,4 +1,4 @@
-import { waitUntil } from "@vercel/functions";
+import { waitUntil, getEnv } from "@vercel/functions";
 import { ping } from "../_ping";
 import { ingest } from "../_db";
 
@@ -8,7 +8,8 @@ export const config = {
 };
 
 export default async function handler(req: Request): Promise<Response> {
-  const region = process.env.VERCEL_REGION || "unknown";
+  const { VERCEL_REGION } = getEnv();
+  const region = VERCEL_REGION || "unknown";
   const authHeader = req.headers.get("authorization");
 
   if (
@@ -25,7 +26,13 @@ export default async function handler(req: Request): Promise<Response> {
   const body = await req.json();
   const res = await ping(body);
 
-  waitUntil(ingest([res]));
+  console.log("Ping response", region, res);
+
+  waitUntil(
+    ingest([res]).then((res) => {
+      console.log("Tinybird response", region, res?.status || "unknown");
+    })
+  );
 
   return new Response(JSON.stringify(res), {
     headers: { "Content-Type": "application/json" },
