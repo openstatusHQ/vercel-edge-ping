@@ -2,7 +2,9 @@ import type { PingResponse } from "./_ping";
 
 const DATASOURCE_NAME = "http_ping_responses__v0";
 
-export async function ingest(requests: PingResponse[]): Promise<void> {
+export async function ingest(
+  requests: PingResponse[]
+): Promise<Response | undefined> {
   if (!process.env.TINYBIRD_TOKEN) return;
 
   const body = requests
@@ -21,4 +23,6 @@ export async function ingest(requests: PingResponse[]): Promise<void> {
       body,
     }
   );
+
+  return res;
 }
