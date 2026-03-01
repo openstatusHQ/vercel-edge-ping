@@ -15,7 +15,7 @@ export async function GET(): Promise<Response> {
   const text = `
   <html>
     <head>
-      <title${META_TITLE}</title>
+      <title>${META_TITLE}</title>
       <meta name="description" content="${META_DESCRIPTION}">
 
       <meta property="og:url" content="${META_URL}">
